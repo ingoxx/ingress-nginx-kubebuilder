@@ -1,0 +1,42 @@
+apiVersion: ingress.nginx.kubebuilder.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.nginx.kubebuilder.io/denyList: "192.168.3.16"
+    kubernetes.io/ingress.class: "kubebuilder-nginx"
+    ingress.nginx.kubebuilder.io/rewrite-target: "/$2"
+  labels:
+    app.kubernetes.io/name: ingress-nginx-kubebuilder
+    app.kubernetes.io/managed-by: kustomize
+  name: api
+  namespace: ingress-nginx-kubebuilder-system
+spec:
+  # TODO(user): Add fields here
+  rules:
+    - host: "*.a.com"
+      http:
+        paths:
+          - path: "/aa/(p1|p2)(/|$)"
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: nginx-service-a
+                port:
+                  number: 9092
+    - host: "b.com"
+      http:
+        paths:
+          - path: "/bb/(p1|p2)(/|$)"
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: nginx-service-b
+                port:
+                  number: 9093
+          - path: "/cc/(p1|p2)(/|$)"
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: nginx-service-c
+                port:
+                  number: 9094
