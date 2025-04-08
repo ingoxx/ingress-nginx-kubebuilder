@@ -19,14 +19,6 @@ import (
 	"k8s.io/klog/v2"
 )
 
-type Extractor struct {
-	annotations map[string]parser.IngressAnnotation
-}
-
-type IngressAnnotations struct {
-	ParsedAnnotations *Ingress `json:"parsed_annotations"`
-}
-
 type Ingress struct {
 	metav1.ObjectMeta
 	Proxy       proxy.Config
@@ -41,6 +33,15 @@ type Ingress struct {
 
 func (i *Ingress) GetIngressAnnotations() {}
 func (i *Ingress) GetInsData() {
+}
+
+// Extractor 提取ingress上的annotations
+type Extractor struct {
+	annotations map[string]parser.IngressAnnotation
+}
+
+type IngressAnnotations struct {
+	ParsedAnnotations *Ingress `json:"parsed_annotations"`
 }
 
 func NewAnnotationExtractor(r resolver.Resolver) *Extractor {
@@ -68,6 +69,7 @@ func (e Extractor) Extract(ing *ingressv1.Ingress) (*Ingress, error) {
 		if err := annotationParser.Validate(ing.GetAnnotations()); err != nil {
 			return nil, kerr.NewRiskyAnnotations(name)
 		}
+
 		val, err := annotationParser.Parse(ing)
 		klog.V(5).InfoS("Parsing Ingress annotation", "name", name, "ingress", klog.KObj(ing), "value", val)
 		if err != nil {
@@ -116,6 +118,7 @@ func (e Extractor) Extract(ing *ingressv1.Ingress) (*Ingress, error) {
 		}
 	}
 
+	//mergo.Merge(pia, data)
 	err := mergo.MapWithOverwrite(pia, data)
 	if err != nil {
 		klog.ErrorS(err, "unexpected error merging extracted annotations")

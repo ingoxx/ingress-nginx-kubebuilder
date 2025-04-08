@@ -148,7 +148,7 @@ func (p *proxy) check(config *Config) error {
 		return err
 	}
 
-	if parser.PassIsIp(config.ProxyHost) && config.ProxySSL {
+	if parser.IsIp(config.ProxyHost) && config.ProxySSL {
 		err = errors.NewValidationError(proxyHostAnnotation)
 		klog.ErrorS(err, proxyAnnotation.Annotations[proxyTargetAnnotation].Doc)
 		return err

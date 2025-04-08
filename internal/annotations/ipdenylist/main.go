@@ -49,7 +49,7 @@ func (p *ipdenyList) Parse(ing *ingressv1.Ingress) (interface{}, error) {
 		if alias == "" {
 			continue
 		}
-		if !parser.PassIsIp(alias) {
+		if !parser.IsIp(alias) {
 			return nil, errors.NewInvalidAnnotationsContentError(denyListAnnotation, alias)
 		}
 

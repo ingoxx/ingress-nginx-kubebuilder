@@ -4,6 +4,7 @@ import (
 	"fmt"
 	ingressv1 "github.com/ingoxx/ingress-nginx-kubebuilder/api/v1"
 	kerr "github.com/ingoxx/ingress-nginx-kubebuilder/internal/errors"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -96,4 +97,15 @@ func GetBoolAnnotations(name string, ing *ingressv1.Ingress, field AnnotationFie
 		return false, err
 	}
 	return ingAnnotations(ing.GetAnnotations()).parseBool(key)
+}
+
+func GetDnsRegex(str string) string {
+	p := `([a0-z9]+\.)+([a-z]+)`
+	matched := regexp.MustCompile(p)
+	dns := matched.FindStringSubmatch(str)
+	if len(dns) == 0 {
+		return ""
+	}
+
+	return dns[0]
 }

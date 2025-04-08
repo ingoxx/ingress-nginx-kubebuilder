@@ -16,17 +16,6 @@ func IsRegexPatternRegex(str string) bool {
 	return matched
 }
 
-func GetDnsRegex(str string) string {
-	p := `([a0-z9]+\.)+([a-z]+)`
-	matched := regexp.MustCompile(p)
-	dns := matched.FindStringSubmatch(str)
-	if len(dns) == 0 {
-		return ""
-	}
-
-	return dns[0]
-}
-
 func IsTargetPathRegex(str string) bool {
 	pattern := `^\/(\w+)|^/\$([0-9])$|^\$([0-9])$`
 	matched, _ := regexp.MatchString(pattern, str)
@@ -39,7 +28,7 @@ func IsNonEmptyParenthesesRegex(str string) bool {
 	return matched
 }
 
-func PassIsIp(target string) bool {
+func IsIp(target string) bool {
 	pattern := `^(\d+).((\d+).){2}(\d+)$`
 	re := regexp.MustCompile(pattern)
 	return re.MatchString(target)
