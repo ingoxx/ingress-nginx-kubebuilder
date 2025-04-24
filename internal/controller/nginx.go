@@ -260,6 +260,7 @@ func (n *NginxController) getBackendConfigure(ingCfg annotations.IngressAnnotati
 		var backendLen = len(v.HTTP.Paths)
 		var ingressPaths []ingressv1.HTTPIngressPath
 		var UpStreamName string
+
 		if ingCfg.ParsedAnnotations.Weight.UseLb {
 			backendLen = 1
 			ingressPaths = append(ingressPaths, v.HTTP.Paths[0])
@@ -270,6 +271,7 @@ func (n *NginxController) getBackendConfigure(ingCfg annotations.IngressAnnotati
 		} else {
 			ingressPaths = v.HTTP.Paths
 		}
+
 		var backend = make([]*ingressv1.Backend, backendLen)
 		for bk, p := range ingressPaths {
 			if err = n.checkIngressContent(&p, ingCfg.ParsedAnnotations); err != nil {
