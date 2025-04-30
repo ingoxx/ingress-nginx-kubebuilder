@@ -344,11 +344,13 @@ func (n *NginxController) generateCrdTlsFile() (map[string]ingressv1.SSLCert, er
 		if err := os.WriteFile(file, v, 0644); err != nil {
 			return ht, err
 		}
+
 		if k == config.TlsCrt {
 			ssl.TlsCrt = file
 		} else if k == config.TlsKey {
 			ssl.TlsKey = file
 		}
+
 	}
 
 	for _, v := range n.ingress.Spec.Rules {

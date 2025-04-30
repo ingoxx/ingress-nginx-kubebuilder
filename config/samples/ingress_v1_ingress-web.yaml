@@ -4,24 +4,24 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "kubebuilder-nginx"
     ingress.nginx.kubebuilder.io/use-lb: "true"
-    ingress.nginx.kubebuilder.io/use-weight: "true"
-#    ingress.nginx.kubebuilder.io/lb-policy: "least_conn"
+#    ingress.nginx.kubebuilder.io/use-weight: "true"
+    ingress.nginx.kubebuilder.io/lb-policy: "least_conn"
   labels:
     app.kubernetes.io/name: ingress-nginx-kubebuilder
     app.kubernetes.io/managed-by: kustomize
-  name: api
+  name: api-test-1
   namespace: web
 spec:
   # TODO(user): Add fields here
   rules:
-    - host: "*.k8s-web.com"
+    - host: "*.k8s-web-2.com"
       http:
         paths:
           - path: "/"
             pathType: ImplementationSpecific
             backend:
               service:
-                weight: 80
+#                weight: 80
                 name: nginx-service-e
                 port:
                   number: 9093
@@ -29,7 +29,7 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                weight: 20
+#                weight: 20
                 name: nginx-service-d
                 port:
                   number: 9092
